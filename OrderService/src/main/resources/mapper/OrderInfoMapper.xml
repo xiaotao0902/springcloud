@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tony.spring.boot.mapper.OrderInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.tony.spring.boot.entity.OrderInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="total" property="total" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+  </resultMap>
+  
+    <resultMap id="OrderCartResultMap" type="com.tony.spring.boot.entity.OrderCartResult" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="total" property="total" jdbcType="VARCHAR" />
+    <result column="date" property="date" jdbcType="VARCHAR" />
+    <result column="names" property="names" jdbcType="VARCHAR" />
+    <result column="images" property="images" jdbcType="VARCHAR" />
+    <result column="counts" property="counts" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, total, date 
+    from order_t where id = #{id}
+  </select>
+  
+  <select id="selectByName" resultMap="OrderCartResultMap" parameterType="java.lang.String" >
+    	select v.id,v.total,v.date,
+			   group_concat(v.name) names,
+               group_concat(v.image) images,
+               group_concat(v.count) counts
+		from(
+			select o.id,o.total,o.date,p.name,p.price,p.image,c.count,o.username
+			from cart_t c
+			join order_t o on o.id = c.order_id
+			join product_t p on p.id = c.product_id
+			where username=#{username}
+			order by o.date desc
+			)v
+		 group by v.id,v.total,v.date,v.username
+  </select>
+  
+  <select id="delete" parameterType="java.lang.Integer" >
+    delete from order_t where id = #{id}
+  </select>
+  
+  <select id="add" parameterType="com.tony.spring.boot.entity.OrderInfo" >
+    insert into order_t(id,total,date,username) 
+    values (#{id},#{total},#{date},#{username})
+  </select>
+  
+    <select id="addCart" parameterType="com.tony.spring.boot.entity.CartInfo" >
+    insert into cart_t(id,order_id, product_id,count,total) 
+    values (#{id},#{order_id},#{product_id},#{count},#{total})
+  </select>
+  
+  <select id="update" parameterType="com.tony.spring.boot.entity.OrderInfo" >
+    
+  </select>
+  
+  <select id="selectByAll" resultMap="BaseResultMap" >
+    
+  </select>
+  
+</mapper>

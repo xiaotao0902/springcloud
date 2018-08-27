@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tony.spring.boot.mapper.ProductInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.tony.spring.boot.entity.ProductInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="VARCHAR" />
+	<result column="image" property="image" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id,name, price, image 
+    from product_t where id = #{id}
+  </select>
+  
+  <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select id,name, price, image 
+    from product_t where name = #{name}
+  </select>
+  
+  <select id="selectByAll" resultMap="BaseResultMap" >
+    select id,name, price, image
+    from product_t
+  </select>
+  
+  <select id="addProduct" parameterType="com.tony.spring.boot.entity.ProductInfo" >
+    insert into product_t(id,name, price, image) 
+    values (#{id},#{name},#{price},#{image})
+  </select>
+  
+  <select id="updateProduct" parameterType="com.tony.spring.boot.entity.ProductInfo" >
+    update product_t set name = #{name},price = #{price},
+    				image = #{image}
+    where id = #{id}
+  </select>
+  
+  <select id="deleteProduct" parameterType="java.lang.Integer" >
+    delete from product_t where id = #{id}
+  </select>
+  
+</mapper>

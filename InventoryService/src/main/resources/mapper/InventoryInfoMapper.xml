@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tony.spring.boot.mapper.InventoryInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.tony.spring.boot.entity.InventoryInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="product_id" property="product_id" jdbcType="INTEGER" />
+    <result column="inventory" property="inventory" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id,product_id,inventory 
+    from inventory_t where product_id = #{id}
+  </select>
+  
+  <select id="updateInventory" parameterType="com.tony.spring.boot.entity.InventoryInfo" >
+    update inventory_t set inventory = #{inventory}
+    where product_id = #{product_id}
+  </select>
+  
+</mapper>
