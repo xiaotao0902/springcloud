@@ -1,7 +1,6 @@
 package com.tony.spring.boot.task;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.Scheduled;
 
 @Configuration
 //@EnableScheduling // 启用定时任务

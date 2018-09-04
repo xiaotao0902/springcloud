@@ -11,6 +11,9 @@ import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomi
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+
+import com.tony.spring.boot.service.MqProductSalesService;
 
 /**
  * 
@@ -23,6 +26,7 @@ import org.springframework.cloud.netflix.feign.EnableFeignClients;
 @EnableAutoConfiguration
 @EnableEurekaClient
 @EnableFeignClients
+@EnableBinding(MqProductSalesService.class)
 @MapperScan("com.tony.spring.boot.mapper")
 public class OrderApp  extends SpringBootServletInitializer implements EmbeddedServletContainerCustomizer {
 

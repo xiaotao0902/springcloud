@@ -38,4 +38,9 @@
     delete from product_t where id = #{id}
   </select>
   
+  <select id="addProductSales" parameterType="com.tony.spring.boot.entity.ProductSales" >
+    insert into product_sales_t(id,product_id,product_sale_time,product_sales_count,product_sales_user) 
+    values (#{id},#{product_id},#{product_sale_time},#{product_sales_count},#{product_sales_user})
+  </select>
+  
 </mapper>

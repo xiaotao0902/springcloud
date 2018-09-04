@@ -3,6 +3,7 @@ package com.tony.spring.boot.mapper;
 import java.util.List;
 
 import com.tony.spring.boot.entity.ProductInfo;
+import com.tony.spring.boot.entity.ProductSales;
 
 public interface ProductInfoMapper {
 
@@ -17,4 +18,6 @@ public interface ProductInfoMapper {
     void updateProduct(ProductInfo product);
     
     void deleteProduct(Integer id);
+    
+    void addProductSales(ProductSales productSales);
 }

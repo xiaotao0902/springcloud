@@ -22,7 +22,7 @@ import com.tony.spring.boot.utils.Utils;
 
 
 @RestController
-@RequestMapping(value="/v1/product")
+@RequestMapping(value="/product")
 public class ProductController {
 	
 	@Autowired  

@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "inventory-service", fallback = InventoryClientFallback.class)
 public interface InventoryClient {
 
-	@RequestMapping(method = RequestMethod.GET, value = "/v1/inventory/{id}")
+	@RequestMapping(method = RequestMethod.GET, value = "/inventory/{id}")
 	public String getInventory(@PathVariable("id") Integer id);
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/v1/inventory/reduce")
+	@RequestMapping(method = RequestMethod.GET, value = "/inventory/reduce")
 	public String reduceInventory(@RequestParam(value = "id",required = false) String id,
 			  					  @RequestParam(value = "count",required = false) String count);
 
-	@RequestMapping(method = RequestMethod.GET, value = "/hello")
+	@RequestMapping(method = RequestMethod.GET, value = "/inventory/hello")
 	public String hello();
 }

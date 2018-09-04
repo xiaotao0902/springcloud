@@ -20,14 +20,16 @@ import com.tony.spring.boot.entity.CartInfo;
 import com.tony.spring.boot.entity.InventoryInfo;
 import com.tony.spring.boot.entity.OrderCartResult;
 import com.tony.spring.boot.entity.OrderInfo;
+import com.tony.spring.boot.entity.ProductSales;
 import com.tony.spring.boot.mapper.OrderInfoMapper;
 import com.tony.spring.boot.netflix.InventoryClient;
+import com.tony.spring.boot.service.MqSendMessage;
 import com.tony.spring.boot.utils.JsonUtil;
 import com.tony.spring.boot.utils.Utils;
 
 
 @RestController
-@RequestMapping(value="/v1/order")
+@RequestMapping(value="/order")
 @Configuration
 public class OrderController {
 	
@@ -37,9 +39,29 @@ public class OrderController {
 	@Autowired  
     private OrderInfoMapper orderInfoMapper;  
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/hello")
-	public String hello() {
+	@Autowired  
+    private MqSendMessage mqSendMessage;
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/mq")
+	public String mq() {
+		ProductSales productSales = new ProductSales();
+		productSales.setId("111");
+		productSales.setProduct_sales_user("test1111");
+		productSales.setProduct_sales_count("3333");
+		productSales.setProduct_sale_time("2001-10-10");
+		mqSendMessage.SendProductSales(productSales);
+		return null;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/hystrix")
+	public String hystrix() {
 		return inventoryClient.hello();
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/zuul")
+	public String zuul() throws InterruptedException {
+		Thread.sleep(4000);
+		return "zuul";
 	}
     
     @GetMapping()  
@@ -108,11 +130,20 @@ public class OrderController {
             		cart.setOrder_id(order_id);
             		orderInfoMapper.addCart(cart);
             		String inventoryStr = inventoryClient.reduceInventory(cart.getProduct_id(),cart.getCount());
+            		
+            		ProductSales productSales = new ProductSales();
+            		productSales.setProduct_id(cart.getProduct_id());
+            		productSales.setProduct_sales_count(cart.getCount());
+            		productSales.setProduct_sales_user(order.getUsername());
+            		productSales.setProduct_sale_time(order.getDate());
+            		mqSendMessage.SendProductSales(productSales);
+            		
             		if("fallback".equals(inventoryStr)) {
             			return "fallback from inventory ";
             		}
             	}
         	}
+        	
 			return JsonUtil.getJsonString(order);
 			
 		} catch (Exception e) {

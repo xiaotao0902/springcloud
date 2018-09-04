@@ -10,6 +10,9 @@ import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletCont
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+
+import com.tony.spring.boot.service.ReceiveService;
 
 /**
  * 
@@ -21,6 +24,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 @SpringBootApplication(exclude = MybatisAutoConfiguration.class)
 @EnableAutoConfiguration
 @EnableEurekaClient
+@EnableBinding(ReceiveService.class)
 @MapperScan("com.tony.spring.boot.mapper")
 public class ProductApp  extends SpringBootServletInitializer implements EmbeddedServletContainerCustomizer {
 
